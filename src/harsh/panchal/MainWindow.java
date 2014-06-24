@@ -202,10 +202,12 @@ public class MainWindow extends javax.swing.JFrame {
                 socket = new ServerSocket(6500);
             } catch (IOException ex) {
                 Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+                logbox.append("Serer couldn't be started\n");
                 server_status.setText("Error starting server...!");
                 return;
             }
-            server_status.setText("Listening to " + getIPAdd() + ":" + "6500");
+            logbox.append("Server started on " + getIPAdd() + ":" + Common.SERVER_PORT + "\n");
+            server_status.setText("Listening to " + getIPAdd() + ":" + Common.SERVER_PORT);
             keepRunning = true;
             server = new Thread(new Runnable() {
                 @Override
@@ -253,7 +255,7 @@ public class MainWindow extends javax.swing.JFrame {
             }, "serverThread");
             server.start();
             serverRunning = true;
-        }
+        } else logbox.append("Server already running, please stop it & then try to start it again...\n");
     }//GEN-LAST:event_but_start_serverActionPerformed
 
     private void but_kill_serverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_but_kill_serverActionPerformed
@@ -266,9 +268,11 @@ public class MainWindow extends javax.swing.JFrame {
             } catch (IOException | InterruptedException ex) {
                 Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
                 server_status.setText("Error while stopping server...!");
+                logbox.append("Server couldn't be stopped " + ex + "\n");
             }
             //server.stop() is obselete now
             server_status.setText("Server stopped...!");
+            logbox.append("Server stopped...!\n");
             serverRunning = false;
         }
     }//GEN-LAST:event_but_kill_serverActionPerformed
